@@ -69,10 +69,10 @@ Create a new R code chunk below that is titled `load-data` and reads in the abov
 
 ```{r load-data}
 # Load the data directly from the URL
-hfi <- read_csv("C:/Users/chitt/Downloads/hfi.csv")
+hfi <- read.csv("hfi.csv")
 
 # Filter the data for the year 2016
-hfi_2016 <- hfi %>% filter(year == 2016)
+hfi_2016 <- hfi |> filter(year == 2016)
 ```
 
 Get the characteristics of the dataset
