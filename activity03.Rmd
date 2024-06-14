@@ -260,7 +260,7 @@ plot_ly(hfi_2016,
     zaxis = list(title = 'pf_score')
   ))
 ```
-```
+
 
 After doing this, respond to the following prompt:
 
@@ -297,9 +297,10 @@ Unfortunately, none of the current `chr` variables have only two levels.
 Fortunately, we can create our own.
 
 
-- In the code chunk below titled `binary-pred`, replace "verbatim" with "r" just before the code chunk title.
-- Run your code chunk or knit your document.
-  
+-In the code chunk below titled `binary-pred`, replace "verbatim" with "r" just before the code chunk title.
+-Run your code chunk or knit your document.
+
+
 ```{r binary-pred}
 hfi_2016 <- hfi_2016 %>%
   mutate(west_atlantic = if_else(
@@ -309,14 +310,13 @@ hfi_2016 <- hfi_2016 %>%
   ))
 ```
 
-
 7. What is happening in the above code? What new variable did we create? How do you know it is new? What values does it take when?
 
 
 - In the code chunk below titled `qual-mlr`, replace "verbatim" with "r" just before the code chunk title.
 - Run your code chunk or knit your document.
 
-```{verbatim qual-mlr}
+```{r qual-mlr}
 # review any visual patterns
 hfi_2016 %>% 
   select(pf_score, west_atlantic, pf_expression_control) %>% 
@@ -346,13 +346,31 @@ Answer the following questions:
 
 8. What is the label that R assigned to this explanatory variable `term`?
 
-*west_atlantic*
+*The label that R assigned to the explanatory variable is "west_atlanticYes".*
 
 9. What information is represented here?
+'Intercept (4.3771413)':
+This is the predicted personal freedom (pf_score) for countries that are not in the West Atlantic region and have a pf_expression_control value of 0.
 
+'west_atlanticYes (-0.1024089)':
+This shows that on average, countries in the West Atlantic region have a pf_score that is about 0.1 lower than countries not in the West Atlantic region, but this difference is not statistically significant.
+
+'pf_expression_control (0.5401164)':
+This indicates that for every 1-unit increase in the expression control measure, the predicted pf_score increases by about 0.54. This relationship is very statistically significant.
 
 10. What information is missing here?
 
+-Sample Size: The total number of observations or data points used to fit the regression model is not provided.
+
+-Standard Errors: The standard errors of the coefficient estimates are not reported. Standard errors indicate the precision of the coefficient estimates and are used to calculate the t-statistics and p-values.
+
+-Variable Descriptions: The descriptions or definitions of the predictor variables, "west_atlantic" and "pf_expression_control", are not included. Providing clear variable descriptions would aid in interpreting the model results.
+
+-Multicollinearity Diagnostics: There is no information on whether the predictor variables exhibit multicollinearity, which can impact the reliability of the coefficient estimates.
+
+-Residual Plots: The output does not include any residual plots, such as a scatter plot of residuals versus fitted values or a normal probability plot of residuals. These diagnostic plots can help assess the validity of the model's assumptions.
+
+-Model Comparison: If this is part of a larger modeling exercise, information on how this model compares to alternative specifications or models would be useful to include.
 
 Your are essentially fitting two models (or $k$ models, where $k$ is the number of levels in your qualitative variable).
 From your reading, you learned that R is creating an indicator variable (see p. 83).
@@ -366,10 +384,44 @@ Use `?relevel` to learn more.
 
 11. Write the estimated equation for your MLR model with a qualitative explanatory variable.
 
+$$
+\hat{y} = \beta_0 + \beta_1 \times \text{west_atlanticYes} + \beta_2 \times \text{pf_expression_control} + \varepsilon
+$$
+12. Now, for each level of your qualitative variable, write the simplified equation of the estimated line for that level. 
+  Note that if your qualitative variable has two levels, you should have two simplified equations.
 
 12. Now, for each level of your qualitative variable, write the simplified equation of the estimated line for that level. 
   Note that if your qualitative variable has two levels, you should have two simplified equations.
 
+
+When 'west_atlantic' is "Yes":
+
+$$
+\hat{y}{Yes} = \beta_0 - \beta_1 + \beta_2 \times \text{pf_expression_control}
+$$
+
+When 'west_atlantic' is "No":
+
+$$
+\hat{y}{No} = \beta_0 + \beta_1 + \beta_2 \times \text{pf_expression_control} 
+$$
+
+Where:
+
+$$
+\hat{y}{Yes}
+$$
+represents the predicted value of the response variable ('pf_score') when 'west_atlantic' is "Yes".
+$$
+\hat{y}{No}
+$$
+  represents the predicted value of the response variable ('pf_score') when 'west_atlantic' is "No".
+$$
+\beta_0, \beta_1 and, \beta_2
+$$
+are the estimated coefficients from the MLR model.
+'pf_expression_control' is the quantitative explanatory variable representing the level of expression and control of personal freedom in a country.
+These equations show how the predicted personal freedom score varies with changes in the level of expression and control of personal freedom ('pf_expression_control') for each level of the qualitative variable 'west_atlantic'.
 
 
 The interpretation of the coefficients (parameter estimates) in multiple regression is slightly different from that of simple regression.
