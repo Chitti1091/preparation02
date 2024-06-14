@@ -211,7 +211,7 @@ After doing this, answer the following questions:
   Remember in Activity 2 that this looked like:
 
 $$
-\hat{y} = b_0 + b_1 \times x_1
+\hat{y} = 1.5 + 0.4 \times x_1+ 0.434 \times x_2
 $$
   
   where $b_0$ and $b_1$ were your model parameter estimates.
@@ -219,6 +219,20 @@ $$
 
 5. For each of the estimated parameters (the *y*-intercept and the slopes associated with each explanatory variable - three total), interpret these values in the context of this problem.
   That is, what do they mean for a "non-data" person?
+  
+*(Intercept): 1.4998522*
+*This represents the estimated value of pf_score (personal freedom) when both pf_expression_control and pf_ss (freedom of religion) are 0. In other words, it's the base level of personal freedom in a country with no freedom of expression or freedom of religion.*
+*The intercept is statistically significant (p-value < 0.001), meaning this base level of personal freedom is unlikely to have occurred by chance.*
+
+*pf_expression_control: 0.3965278*
+*This coefficient indicates that for every one-unit increase in pf_expression_control, the pf_score (personal freedom) increases by 0.3965278, holding pf_ss (freedom of religion) constant.*
+*This means that as a country's freedom of expression increases, its overall personal freedom also increases, even after accounting for the effects of freedom of religion.*
+*This variable is highly statistically significant (p-value < 0.001), suggesting a strong relationship between freedom of expression and personal freedom.*
+
+*pf_ss: 0.4346730*
+*This coefficient suggests that for every one-unit increase in pf_ss (freedom of religion), the pf_score (personal freedom) increases by 0.4346730, holding pf_expression_control constant.*
+*So as a country's freedom of religion increases, its overall personal freedom also increases, independent of the effects of freedom of expression.*
+*This variable is also highly statistically significant (p-value < 0.001), indicating a strong link between freedom of religion and personal freedom.*
 
 ## Challenge: 3-D plots
 
@@ -228,11 +242,36 @@ Ideally, this would be something that plays nicely with (looks similar to) `{ggp
 
 - Create a new R code chunk, with a descriptive name, and add your code to create this plot.
 
+```{r 3-D plot, message=FALSE, warning=FALSE}
+# Load necessary libraries
+library(plotly)
+library(ggplot2)
+
+# Create 3D scatter plot
+plot_ly(hfi_2016, 
+        x = ~pf_expression_control, 
+        y = ~pf_religion, 
+        z = ~pf_ss,
+        type = 'scatter3d',
+        mode = 'markers') %>%
+  layout(scene = list(
+    xaxis = list(title = 'pf_expression_control'),
+    yaxis = list(title = 'pf_ss'),
+    zaxis = list(title = 'pf_score')
+  ))
+```
+```
+
 After doing this, respond to the following prompt:
 
 6. Compare your 3-D scatterplot and the `GGally::ggpairs` output.
   Comment on the strengths and weaknesses of these two visualizations.
   Do both display on GitHub when you push your work there?
+  
+*The 3D plot is more interactive, allowing the user to zoom, rotate, and explore the data from different perspectives. This provides a more holistic view of the relationships between the three variables:* pf_expression_control, pf_ss, and pf_score.*
+*The 3D visualization can reveal patterns, clusters, and connections that may not be as apparent in a 2D plot, offering a more comprehensive understanding of the data structure.*
+*The 3D plot can be more complex to interpret, especially when dealing with large or dense datasets. The overlapping of data points can make it challenging to distinguish individual observations.*
+*The 3D nature of the visualization may suffer from depth perception issues when viewed on a 2D medium, such as a computer screen or a printout.*
 
 # Day 2
 
@@ -261,7 +300,7 @@ Fortunately, we can create our own.
 - In the code chunk below titled `binary-pred`, replace "verbatim" with "r" just before the code chunk title.
 - Run your code chunk or knit your document.
   
-```{verbatim binary-pred}
+```{r binary-pred}
 hfi_2016 <- hfi_2016 %>%
   mutate(west_atlantic = if_else(
     region %in% c("North America", "Latin America & the Caribbean"),
@@ -269,6 +308,7 @@ hfi_2016 <- hfi_2016 %>%
     "Yes"
   ))
 ```
+
 
 7. What is happening in the above code? What new variable did we create? How do you know it is new? What values does it take when?
 
